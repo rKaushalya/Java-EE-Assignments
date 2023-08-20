@@ -119,7 +119,11 @@
           let id = cus.id;
           let name = cus.name;
           let address = cus.address;
-          let row=`<tr><td>${id}</td><td>${name}</td><td>${address}</td></tr>`;
+
+          console.log(id);
+
+          <%--let row=`<tr><td>${id}</td><td>${name}</td><td>${address}</td></tr>`;--%>
+          let row = "<tr><td>" + id + "</td><td>" + name + "</td><td>" + address + "</td></tr>";
           $("#tblCustomer").append(row);
         }
       },
