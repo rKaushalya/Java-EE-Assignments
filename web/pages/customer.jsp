@@ -136,7 +136,7 @@
   $("#btnCustomer").click(function (){
     let formData=$("#customerForm").serialize();
     $.ajax({
-      url:"customer?option=add",
+      url:"customer",
       method:"post",
       data:formData,
       success:function (res){
