@@ -155,11 +155,15 @@
   $("#btnCusDelete").click(function(){
     let formData=$("#customerForm").serialize();
     $.ajax({
-      url:'customer?option=delete',
-      method:'post',
+      url:'customer',
+      method:'delete',
       data:formData,
       success:function (resp){
+        alert(resp.message);
         getAllCustomers();
+      },
+      error:function(error){
+        console.log(error);
       }
     });
   });
@@ -167,18 +171,19 @@
   $("#btnUpdate").click(function (){
     let formData=$("#customerForm").serialize();
     $.ajax({
-      url:'customer?option=update',
-      method:'post',
+      url:'customer',
+      method:'put',
       data:formData,
       success:function (resp){
+        alert(resp.message);
         getAllCustomers();
+      },
+      error:function(error){
+        console.log(error);
       }
     });
   });
 </script>
-
-
-<!--when the response received catch it and set it to the table-->
 
 
 </body>

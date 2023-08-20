@@ -91,7 +91,7 @@ public class CustomerServlet extends HttpServlet {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ajax", "root", "1234");
 
-            PreparedStatement pstm = connection.prepareStatement("update Customer set name=?,address=? where id=?");
+            PreparedStatement pstm = connection.prepareStatement("update customer set name=?,address=? where id=?");
             pstm.setObject(3,id);
             pstm.setObject(1,name);
             pstm.setObject(2,address);
@@ -117,7 +117,7 @@ public class CustomerServlet extends HttpServlet {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ajax", "root", "1234");
 
 
-            PreparedStatement pstm = connection.prepareStatement("delete from Customer where id=?");
+            PreparedStatement pstm = connection.prepareStatement("delete from customer where id=?");
             pstm.setObject(1, id);
             if (pstm.executeUpdate() > 0) {
 
