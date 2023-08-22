@@ -120,9 +120,6 @@
           let name = cus.name;
           let address = cus.address;
 
-          console.log(id);
-
-          <%--let row=`<tr><td>${id}</td><td>${name}</td><td>${address}</td></tr>`;--%>
           let row = "<tr><td>" + id + "</td><td>" + name + "</td><td>" + address + "</td></tr>";
           $("#tblCustomer").append(row);
         }
@@ -153,11 +150,13 @@
   });
 
   $("#btnCusDelete").click(function(){
-    let formData=$("#customerForm").serialize();
+      let id = $("#txtCustomerID").val();
     $.ajax({
       url:'customer',
       method:'delete',
-      data:formData,
+      data:JSON.stringify({
+        "id":id
+      }),
       success:function (resp){
         alert(resp.message);
         getAllCustomers();
@@ -169,11 +168,19 @@
   });
 
   $("#btnUpdate").click(function (){
-    let formData=$("#customerForm").serialize();
+    let id = $("#txtCustomerID").val();
+    let name = $("#txtCustomerName").val();
+    let address = $("#txtCustomerAddress").val();
+
     $.ajax({
       url:'customer',
+      contentType: "application/json",
       method:'put',
-      data:formData,
+      data:JSON.stringify({
+        "id":id,
+        "name":name,
+        "address":address
+      }),
       success:function (resp){
         alert(resp.message);
         getAllCustomers();

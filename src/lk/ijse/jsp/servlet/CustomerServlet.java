@@ -16,8 +16,9 @@ public class CustomerServlet extends HttpServlet {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ajax", "root", "1234");
-            PreparedStatement pstm = connection.prepareStatement("select * from Customer");
+            PreparedStatement pstm = connection.prepareStatement("select * from customer");
             ResultSet rst = pstm.executeQuery();
+            resp.addHeader("Access-Control-Allow-Origin","*");
 
             JsonArrayBuilder allCustomers = Json.createArrayBuilder();
             while (rst.next()) {
@@ -49,8 +50,30 @@ public class CustomerServlet extends HttpServlet {
         String cusName = req.getParameter("cusName");
         String cusAddress = req.getParameter("cusAddress");
 
+        /*JsonReader reader = Json.createReader(req.getReader());
+        JsonArray jsonValues = reader.readArray();
+
+        for (JsonValue jsonValue : jsonValues) {
+            JsonObject jsonObject = jsonValue.asJsonObject();
+            String id = jsonObject.getString("oid");
+            String name = jsonObject.getString("date");
+            JsonArray orderDetails = jsonObject.getJsonArray("orderDetails");
+
+            System.out.println(id+" "+name);
+
+            for (JsonValue orderDetail : orderDetails) {
+                JsonObject jsonObject1 = orderDetail.asJsonObject();
+                String code = jsonObject1.getString("code");
+
+                System.out.println(code);
+            }
+            System.out.println();
+        }*/
+
 
         resp.addHeader("Content-Type", "application/json");
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -87,6 +110,8 @@ public class CustomerServlet extends HttpServlet {
         String name = customerObject.getString("name");
         String address = customerObject.getString("address");
 
+        resp.addHeader("Access-Control-Allow-Origin","*");
+
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ajax", "root", "1234");
@@ -111,11 +136,17 @@ public class CustomerServlet extends HttpServlet {
 
 
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String id = req.getParameter("id");
+        JsonReader reader = Json.createReader(req.getReader());
+        JsonObject jsonObject = reader.readObject();
+
+        String id = jsonObject.getString("id");
+
+        System.out.println(id);
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ajax", "root", "1234");
 
+            resp.addHeader("Access-Control-Allow-Origin","*");
 
             PreparedStatement pstm = connection.prepareStatement("delete from customer where id=?");
             pstm.setObject(1, id);
@@ -126,6 +157,7 @@ public class CustomerServlet extends HttpServlet {
                 objectBuilder.add("message", "Successfully Deleted.....");
                 objectBuilder.add("Data", " ");
                 resp.getWriter().print(objectBuilder.build());
+
             }
 
         } catch (Exception e) {
@@ -139,5 +171,13 @@ public class CustomerServlet extends HttpServlet {
 
         }
 
+    }
+
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.addHeader("Access-Control-Allow-Origin","*");
+        resp.addHeader("Access-Control-Allow-Methods","DELETE");
+        resp.addHeader("Access-Control-Allow-Methods","PUT");
+        resp.addHeader("Access-Control-Allow-Headers","content-type");
     }
 }
